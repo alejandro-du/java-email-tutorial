@@ -6,6 +6,7 @@ import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.server.SpringVaadinServlet;
 import com.vaadin.ui.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -19,6 +20,9 @@ import java.io.InputStream;
 @SpringUI
 @Theme("valo")
 public class ExampleUI extends UI {
+
+    @Autowired
+    private SpringEmailService springEmailService;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -45,7 +49,7 @@ public class ExampleUI extends UI {
             String fileName = "file.pdf";
             String mimeType = "application/pdf";
 
-            SpringEmailService.send(from, to, subject, text, inputStream, fileName, mimeType);
+            springEmailService.send(from, to, subject, text, inputStream, fileName, mimeType);
 
             inputStream.close();
 

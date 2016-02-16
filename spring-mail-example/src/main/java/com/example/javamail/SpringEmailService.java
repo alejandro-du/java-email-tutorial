@@ -2,6 +2,7 @@ package com.example.javamail;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -13,6 +14,7 @@ import java.util.*;
 /**
  * @author alejandro@vaadin.com
  **/
+@Service
 public class SpringEmailService {
 
     /**
