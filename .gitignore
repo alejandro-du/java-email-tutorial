@@ -1,0 +1,5 @@
+*/.idea/*
+rebel.xml
+*.iml
+*/src/main/webapp/VAADIN/themes/mytheme/styles.css
+/target
