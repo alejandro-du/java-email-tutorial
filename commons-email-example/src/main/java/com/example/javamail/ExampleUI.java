@@ -29,6 +29,7 @@ public class ExampleUI extends UI implements Upload.Receiver {
         TextField textField = new TextField("Your email:");
         textField.addValidator(new EmailValidator("Invalid email address"));
 
+        // an upload component to select the file to be attached
         Upload upload = new Upload("Attachment", this);
         upload.setImmediate(true);
 

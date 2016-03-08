@@ -12,28 +12,39 @@ import org.springframework.web.context.ContextLoaderListener;
 
 import javax.servlet.annotation.WebListener;
 import javax.servlet.annotation.WebServlet;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * @author alejandro@vaadin.com
  **/
 @SpringUI
 @Theme("valo")
-public class ExampleUI extends UI {
+public class ExampleUI extends UI implements Upload.Receiver {
 
     @Autowired
     private SpringEmailService springEmailService;
+
+    private ByteArrayOutputStream outputStream;
+    private String mimeType;
+    private String fileName;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         // the text field where users will specify their email address
         TextField textField = new TextField("Your email:");
 
+        // an upload component to select the file to be attached
+        Upload upload = new Upload("Attachment", this);
+        upload.setImmediate(true);
+
         // a button with a click listener that sends the email
-        Button button = new Button("Send me the PDF", e -> sendEmail(textField.getValue()));
+        Button button = new Button("Send me the file", e -> sendEmail(textField.getValue()));
 
         // a layout containing the previous components
-        VerticalLayout layout = new VerticalLayout(textField, button);
+        VerticalLayout layout = new VerticalLayout(textField, upload, button);
         layout.setMargin(true);
         layout.setSpacing(true);
         setContent(layout); // sets the content for this UI
@@ -42,12 +53,10 @@ public class ExampleUI extends UI {
     private void sendEmail(String to) {
         try {
             // all values as variables to clarify its usage
-            InputStream inputStream = getClass().getResourceAsStream("/file.pdf");
+            InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
             String from = "sender@test.com";
-            String subject = "Your PDF";
-            String text = "Here there is your <b>PDF</b> file!";
-            String fileName = "file.pdf";
-            String mimeType = "application/pdf";
+            String subject = "Your file";
+            String text = "Here there is your <b>file</b>!";
 
             springEmailService.send(from, to, subject, text, inputStream, fileName, mimeType);
 
@@ -59,6 +68,13 @@ public class ExampleUI extends UI {
             e.printStackTrace();
             Notification.show("Error sending the email", Notification.Type.ERROR_MESSAGE);
         }
+    }
+
+    @Override
+    public OutputStream receiveUpload(String filename, String mimeType) {
+        this.fileName = filename;
+        this.mimeType = mimeType;
+        return outputStream = new ByteArrayOutputStream();
     }
 
     @WebServlet(value = "/*", asyncSupported = true)
