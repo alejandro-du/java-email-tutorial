@@ -100,9 +100,6 @@ public class CommonsEmailService {
                 // create a data source to wrap the attachment and its mime type
                 ByteArrayDataSource dataSource = new ByteArrayDataSource(attachments.get(i), mimeTypes.get(i));
 
-                // create a dataHandler wrapping the data source
-                DataHandler dataHandler = new DataHandler(dataSource);
-
                 // add the attachment
                 email.attach(dataSource, fileNames.get(i), "attachment");
             }
