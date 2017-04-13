@@ -1,6 +1,5 @@
 package com.example.javamail;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
@@ -21,7 +20,6 @@ import java.io.OutputStream;
  * @author alejandro@vaadin.com
  **/
 @SpringUI
-@Theme("valo")
 public class ExampleUI extends UI implements Upload.Receiver {
 
     @Autowired
@@ -38,15 +36,12 @@ public class ExampleUI extends UI implements Upload.Receiver {
 
         // an upload component to select the file to be attached
         Upload upload = new Upload("Attachment", this);
-        upload.setImmediate(true);
 
         // a button with a click listener that sends the email
         Button button = new Button("Send me the file", e -> sendEmail(textField.getValue()));
 
         // a layout containing the previous components
         VerticalLayout layout = new VerticalLayout(textField, upload, button);
-        layout.setMargin(true);
-        layout.setSpacing(true);
         setContent(layout); // sets the content for this UI
     }
 
