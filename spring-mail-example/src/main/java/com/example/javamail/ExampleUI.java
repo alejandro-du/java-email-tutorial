@@ -1,6 +1,5 @@
 package com.example.javamail;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.EnableVaadin;
 import com.vaadin.spring.annotation.SpringUI;
@@ -18,7 +17,6 @@ import java.io.InputStream;
  * @author alejandro@vaadin.com
  **/
 @SpringUI
-@Theme("valo")
 public class ExampleUI extends UI {
 
     @Autowired
@@ -34,8 +32,6 @@ public class ExampleUI extends UI {
 
         // a layout containing the previous components
         VerticalLayout layout = new VerticalLayout(textField, button);
-        layout.setMargin(true);
-        layout.setSpacing(true);
         setContent(layout); // sets the content for this UI
     }
 
