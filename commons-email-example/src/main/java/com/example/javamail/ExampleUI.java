@@ -16,7 +16,6 @@ import java.io.OutputStream;
 /**
  * @author alejandro@vaadin.com
  **/
-@Theme("valo")
 public class ExampleUI extends UI implements Upload.Receiver {
 
     private ByteArrayOutputStream outputStream;
@@ -27,11 +26,9 @@ public class ExampleUI extends UI implements Upload.Receiver {
     protected void init(VaadinRequest vaadinRequest) {
         // the text field where users will specify their email address
         TextField textField = new TextField("Your email:");
-        textField.addValidator(new EmailValidator("Invalid email address"));
 
         // an upload component to select the file to be attached
         Upload upload = new Upload("Attachment", this);
-        upload.setImmediate(true);
 
         // a button with a click listener that sends the email
         Button button = new Button("Send me the file", e -> sendEmail(textField.getValue()));
