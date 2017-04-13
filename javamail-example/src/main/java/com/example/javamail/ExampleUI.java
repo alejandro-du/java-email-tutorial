@@ -1,6 +1,5 @@
 package com.example.javamail;
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
@@ -15,7 +14,6 @@ import java.io.OutputStream;
 /**
  * @author alejandro@vaadin.com
  **/
-@Theme("valo")
 public class ExampleUI extends UI implements Upload.Receiver {
 
     private ByteArrayOutputStream outputStream;
@@ -35,8 +33,6 @@ public class ExampleUI extends UI implements Upload.Receiver {
 
         // a layout containing the previous components
         VerticalLayout layout = new VerticalLayout(textField, upload, button);
-        layout.setMargin(true);
-        layout.setSpacing(true);
         setContent(layout); // sets the content for this UI
     }
 
