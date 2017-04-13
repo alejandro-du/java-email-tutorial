@@ -2,7 +2,6 @@ package com.example.javamail;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
@@ -27,11 +26,9 @@ public class ExampleUI extends UI implements Upload.Receiver {
     protected void init(VaadinRequest vaadinRequest) {
         // the text field where users will specify their email address
         TextField textField = new TextField("Your email:");
-        textField.addValidator(new EmailValidator("Invalid email address"));
 
         // an upload component to select the file to be attached
         Upload upload = new Upload("Attachment", this);
-        upload.setImmediate(true);
 
         // a button with a click listener that sends the email
         Button button = new Button("Send me the file", e -> sendEmail(textField.getValue()));
