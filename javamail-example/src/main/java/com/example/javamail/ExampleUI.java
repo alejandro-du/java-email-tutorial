@@ -1,13 +1,17 @@
 package com.example.javamail;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Receiver;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.data.binder.ValidationResult;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.data.validator.EmailValidator;
+import com.vaadin.flow.router.Route;
 
-import javax.servlet.annotation.WebServlet;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -16,31 +20,37 @@ import java.io.OutputStream;
 /**
  * @author alejandro@vaadin.com
  **/
-@Theme("valo")
-public class ExampleUI extends UI implements Upload.Receiver {
+@Route("")
+public class ExampleUI extends VerticalLayout implements Receiver {
 
     private ByteArrayOutputStream outputStream;
     private String mimeType;
     private String fileName;
 
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
+    public ExampleUI() {
         // the text field where users will specify their email address
         TextField textField = new TextField("Your email:");
-        textField.addValidator(new EmailValidator("Invalid email address"));
+
+        Span span = new Span("Attachment (required):");
 
         // an upload component to select the file to be attached
-        Upload upload = new Upload("Attachment", this);
-        upload.setImmediate(true);
+        Upload upload = new Upload(this);
 
         // a button with a click listener that sends the email
-        Button button = new Button("Send me the file", e -> sendEmail(textField.getValue()));
+        Button button = new Button("Send me the file", e -> {
+            ValidationResult result = new EmailValidator("Invalid email address").apply(textField.getValue(), new ValueContext());
+            if (result.isError()) {
+                textField.setErrorMessage(result.getErrorMessage());
+                textField.setInvalid(true);
+            } else {
+                textField.setInvalid(false);
+                sendEmail(textField.getValue());
+            }
 
-        // a layout containing the previous components
-        VerticalLayout layout = new VerticalLayout(textField, upload, button);
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        setContent(layout); // sets the content for this UI
+        });
+
+        // add the previous components to the VerticalLayout
+        add(textField, span, upload, button);
     }
 
     private void sendEmail(String to) {
@@ -60,7 +70,7 @@ public class ExampleUI extends UI implements Upload.Receiver {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Notification.show("Error sending the email", Notification.Type.ERROR_MESSAGE);
+            Notification.show("Error sending the email");
         }
     }
 
@@ -69,11 +79,6 @@ public class ExampleUI extends UI implements Upload.Receiver {
         this.fileName = filename;
         this.mimeType = mimeType;
         return outputStream = new ByteArrayOutputStream();
-    }
-
-    @WebServlet(urlPatterns = "/*", name = "ExampleUIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = ExampleUI.class, productionMode = false)
-    public static class ExampleUIServlet extends VaadinServlet {
     }
 
 }

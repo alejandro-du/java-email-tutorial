@@ -8,9 +8,6 @@
 	<version>1.0-SNAPSHOT</version>
 
 	<properties>
-		<vaadin.version>7.6.2</vaadin.version>
-		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -38,7 +35,7 @@
 			<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-bom</artifactId>
-				<version>${vaadin.version}</version>
+				<version>10.0.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -54,16 +51,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-push</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client</artifactId>
-			<scope>provided</scope>
+			<artifactId>vaadin-core</artifactId>
 		</dependency>
 
 		<!-- Apache Commons Email -->
@@ -73,137 +61,16 @@
 			<version>1.4</version>
 		</dependency>
 
-		<!--
-		  Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).
-
-		  For widgetset compilation, vaadin-client-compiler is automatically added on the
-		  compilation classpath by vaadin-maven-plugin so normally there is no need for an
-		  explicit dependency.
-		-->
-		<!--
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client-compiler</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-themes</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.3</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.vaadin.wscdn</groupId>
-				<artifactId>wscdn-maven-plugin</artifactId>
-				<version>0.0.2</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>2.4</version>
-			</plugin>
-
-			<!-- The Jetty plugin allows us to easily test the development build by
-				running jetty:run on the command line. -->
-			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.plugin.version}</version>
-				<configuration>
-				    <scanIntervalSeconds>2</scanIntervalSeconds>
-				</configuration>
+				<version>9.4.11.v20180605</version>
 			</plugin>
 		</plugins>
-
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-				<!-- TODO Remove when http://dev.vaadin.com/ticket/14924 is resolved -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.vaadin</groupId>
-										<artifactId>
-											vaadin-maven-plugin
-										</artifactId>
-										<versionRange>[7.1.11,)</versionRange>
-										<goals>
-											<goal>resources</goal>
-											<goal>update-widgetset</goal>
-											<goal>compile</goal>
-											<goal>compile-theme</goal>
-											<goal>update-theme</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
 	</build>
-
-	<profiles>
-		<profile>
-			<!-- Vaadin pre-release repositories -->
-			<id>vaadin-prerelease</id>
-			<activation>
-				<activeByDefault>false</activeByDefault>
-			</activation>
-
-			<repositories>
-				<repository>
-					<id>vaadin-prereleases</id>
-					<url>http://maven.vaadin.com/vaadin-prereleases</url>
-				</repository>
-			</repositories>
-			<pluginRepositories>
-				<pluginRepository>
-					<id>vaadin-prereleases</id>
-					<url>http://maven.vaadin.com/vaadin-prereleases</url>
-				</pluginRepository>
-			</pluginRepositories>
-		</profile>
-	</profiles>
 
 </project>
